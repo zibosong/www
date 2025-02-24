@@ -4,11 +4,22 @@
 		<meta charset="UTF-8">
 		<meta name="viewport"
 		      content="width=device-width, initial-scale=1.0">
-		<!-- <link rel="stylesheet" href="assets/css/projects/weiqi.css"/> -->
+		<link rel="stylesheet" href="assets/css/projects/weiqi.css"/> 
 		<title>weiqi</title>
 	</head>
-	<body onload="init();">
-        <canvas id="goboard" width="460" height="500" style="border:1px solid white;"></canvas>
+	<body>
+		<div>
+			<h1>SURROUND</h1>
+		</div>
+		<div>
+			<button>Previous</button>
+			<button>Next</button>
+			<button onclick="resetBoard();">Reset</button>
+		</div>
+		<div>
+			<canvas id="goboard" width="690" height="750"><canvas>
+		</div>
+        
 		<script src="assets/js/projects/weiqi.js"></script>
 	</body>
 </html> 

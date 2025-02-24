@@ -1,15 +1,19 @@
 body {
-    background-color: grey;
+    background-color: white;
 }
 
-p1 {
+h1 {
     font-family: Arial, Helvetica, sans-serif;
     font-size: large;
     color: black;
 }
 
-.container {
+.container.active {
     background-color: orange;
     height: 60vw;
-    width: 60vw;
+    width: 90vw;
+}
+
+canvas {
+    border: 1px solid black;
 }

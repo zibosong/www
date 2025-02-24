@@ -1,8 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Muli&display=swap');
-
+/*
 * {
 	box-sizing: border-box;	
 }
+*/
+/*
 body {
 	font-family: 'Muli', san-serif;
 	display: flex;
@@ -12,4 +13,11 @@ body {
 	height: 100vh;
 	overflow: hidden;
 	margin: 0;
+}
+*/
+
+canvas_ {
+	width: 460px;
+	height: 500px;
+	border: 1px solid red;
 }
