@@ -1,4 +1,6 @@
 const canvas = document.getElementById("goboard");
+canvas.width = 690;
+canvas.height = 750;
 const ctx = canvas.getContext("2d");
 const boardBackground="orange";
 const boardLineColor = "Black";
@@ -22,30 +24,46 @@ const whiteStoneFill = "White";
 let stoneColor = 1;
 let stoneColorFlag = 0;
 // Intersection status
-let stoneArray = [
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-];
+let initStoneMap = [];
+let currentStoneMap = [];
+let stoneMoveChain = {};
+let currentStep = 0;
+let stepHighWaterMarker = 0;
 
 // main
 mainGame();
+
+function initGame() {
+    stoneColor = 1;
+    stoneColorFlag = 0;
+    initStoneMap = [
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ];
+    currentStoneMap = [...initStoneMap];
+    //stoneMoveChain = {0: [...currentStoneMap], 1: [[]], 2: [[]], 3: [[]], 4:[[]], 5:[[]], 6: [[]] };
+    stoneMoveChain[0] = [...initStoneMap];
+    currentStep = 0;
+
+    drawBoard();
+}
 
 function drawBoard() {
     ctx.strokeStyle = boardLineColor;
@@ -88,17 +106,18 @@ function drawSingleStone(stoneColor, x, y) {
 
     // Draw stone
     ctx.beginPath();
-    ctx.arc(x, y, intervalWidth / 2 - 1, 0, 2 * Math.PI);
+    ctx.arc(x, y, intervalWidth / 2 - 2, 0, 2 * Math.PI);
     ctx.fill();
     ctx.stroke();    
 }
 
+// Draw stone map.
 function drawAllStone() {
     for (let i = 0; i < 19; i++) {
         for (let j = 0; j < 19; j++) {
-            if (stoneArray[i][j] == 1) {
+            if (currentStoneMap[i][j] == 1) {
                 drawSingleStone("black", (j + 1) * intervalWidth, (i + 1) * intervalHeight);
-            } else if (stoneArray[i][j] == 2) {
+            } else if (currentStoneMap[i][j] == 2) {
                 drawSingleStone("white", (j + 1) * intervalWidth, (i + 1) * intervalHeight);
             }
         }
@@ -106,13 +125,7 @@ function drawAllStone() {
 }
 
 function resetBoard() {
-    drawBoard();
-    for (let i = 0; i < 19; i++) {
-        for (let j = 0; j < 19; j++) {
-            stoneArray[i][j] = 0;
-        }
-    }
-    stoneColor = 1;   
+    initGame(); 
     drawAllStone();
 }
 
@@ -125,23 +138,29 @@ function checkStoneRange (x, interval) {
     return x >= interval && x <= interval * 19;
 }
 
-function drawStone (event) {
+function updateStoneMap (event) {
     //Get stone position
     var canvasX = Math.round( (event.pageX - canvasLeft - 8) / intervalWidth) * intervalWidth;
-    var stoneArrayY = Math.round( (event.pageX - canvasLeft -8 ) / intervalWidth) - 1;
+    var stoneMapY = Math.round( (event.pageX - canvasLeft -8 ) / intervalWidth) - 1;
     var canvasY = Math.round( (event.pageY - canvasTop - 8) / intervalHeight) * intervalHeight;
-    var stoneArrayX = Math.round( (event.pageY - canvasTop - 8) / intervalHeight ) - 1;
+    var stoneMapX = Math.round( (event.pageY - canvasTop - 8) / intervalHeight ) - 1;
 
     let currentColor = stoneColor;
-
+    
     if ( checkStoneRange(canvasX, intervalWidth) && checkStoneRange(canvasY, intervalHeight)) {
-        if (stoneArray[stoneArrayX][stoneArrayY] == 0) {
+        if (currentStoneMap[stoneMapX][stoneMapY] == 0) {
             if (currentColor > 0) {
-            stoneArray[stoneArrayX][stoneArrayY] = 1;
+                currentStoneMap[stoneMapX][stoneMapY] = 1;
             } else {
-            stoneArray[stoneArrayX][stoneArrayY] = 2;
+                currentStoneMap[stoneMapX][stoneMapY] = 2;
             }
-
+            
+            currentStep++;
+            if (currentStep > stepHighWaterMarker) {
+                stepHighWaterMarker = currentStep;
+            }
+            console.log("Add stone step = " + currentStep);
+            stoneMoveChain[currentStep] = currentStoneMap.map(subArray => [...subArray]);
             updateBoard();
             stoneColor = 0 - currentColor;
         }		
@@ -172,13 +191,33 @@ function removeStone(event) {
     }				
 }
 
+function goPrevious() {
+    if (currentStep > 0) {
+        currentStep--;
+        currentStoneMap = [...stoneMoveChain[currentStep]];
+        updateBoard();
+        console.log(currentStep);
+    };
+}
+
+function goNext() {
+    if (currentStep < stepHighWaterMarker) {
+        currentStep++;
+        currentStoneMap = [...stoneMoveChain[currentStep]];
+        updateBoard();
+        console.log(currentStep);
+    }
+    
+}
+
 function mainGame() {
     // Draw game board
-    drawBoard();
+    initGame();
     if (canvas.getContext) {
         // Draw stone by click
-        canvas.addEventListener("click", event => drawStone(event));
-        // Remove stone by right click
+        canvas.addEventListener("click", event => updateStoneMap(event));
+        // Remove stone by double click
         canvas.addEventListener("dblclick", event => removeStone(event));
     }
 }
+

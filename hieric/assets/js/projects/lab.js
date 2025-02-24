@@ -1,74 +1,25 @@
-let xSpeed = 1;
-let xPosition = 100;
+let myArray = [
+    [1, 2, 3],
+    [0, 0, 0]
+];
+let a = 1;
 
-const canvas = document.getElementById("drawingBoard");
-const ctx = canvas.getContext("2d");
+let myObj = {1: myArray.map(subArray => [...subArray])};
+//myObj[1] = myArray.map(subArray => [...subArray]);
 
-moveBall();
+console.log(myArray[0][0], myArray[0][1], myArray[0][2]);
+console.log(myObj[1][0][0], myObj[1][0][1], myObj[1][0][2]);
 
-function createRect (startX, startY, width, height, fillColor, borderColor) {
-	ctx.beginPath();
-	ctx.rect(startX, startY, width, height);	
-	ctx.closePath();
-	if (fillColor) {
-		ctx.fillStyle = fillColor;
-		ctx.fill();
-	} 
-	if (borderColor) {
-		ctx.strokeStyle = borderColor;
-		ctx.stroke();
-	}
-}
+a++;
+idx = a - 1;
+console.log("a=" + a);
+myArray[0][2] = 5;
+console.log(myArray[0][2]);
 
-function createTriangle (x1, y1, x2, y2, x3, y3, fillColor, borderColor) {
-	ctx.beginPath();
-	ctx.moveTo(x1, y1);
-	ctx.lineTo(x2, y2);
-	ctx.lineTo(x3, y3);
-	ctx.lineTo(x1, y1);
-	ctx.closePath();
+myObj[a] = myArray.map(subArray => [...subArray]);
 
-	if (fillColor) {
-		ctx.fillStyle = fillColor;
-		ctx.fill();
-	} 
-	if (borderColor) {
-		ctx.strokeStyle = borderColor;
-		ctx.stroke();
-	}
-}
-
-function createArc (centerX, centerY, radius, fillColor, borderColor) {
-	ctx.fillStyle = borderColor;
-	ctx.moveTo(centerX + radius, centerY);
-	ctx.beginPath();
-	ctx.arc(centerX, centerY, radius, 0, Math.PI*2, true);
-	ctx.closePath();
-	if (fillColor) {
-		ctx.fillStyle = fillColor;
-		ctx.fill();
-	} 
-	if (borderColor) {
-		ctx.strokeStyle = borderColor;
-		ctx.stroke();
-	}
-}
-/*
-createRect(30, 30, 50, 50, null, "blue");
-createTriangle(100, 50, 50, 100, 150, 100, "green", "red");
-createTriangle(100, 300, 50, 400, 150, 400, null, "orange");
-createRect(250, 100, 100, 100, "yellow", "red");
-*/
-function moveBall () {
-	ctx.clearRect (0, 0, 500, 500);
-	createArc(xPosition, 200, 10, "green", "green");
-	xPosition += xSpeed;
-
-	if (xPosition > 400){
-		xSpeed = -xSpeed;
-	} else if (xPosition < 100) {
-		xSpeed = -xSpeed;
-	}
-
-	setTimeout(moveBall, 30);
-}
+console.log(myArray[0][0], myArray[0][1], myArray[0][2]);
+//console.log(myArray[1][0], myArray[1][1], myArray[1][2]);
+console.log(myObj[1][0][0], myObj[1][0][1], myObj[1][0][2]);
+console.log(myObj[2][0][0], myObj[2][0][1], myObj[2][0][2]);
+console.log(myObj[a][0][2]);

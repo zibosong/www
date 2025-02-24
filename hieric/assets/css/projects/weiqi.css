@@ -16,8 +16,12 @@ body {
 }
 */
 
-canvas_ {
-	width: 460px;
-	height: 500px;
-	border: 1px solid red;
+div {
+	display: flex;
+	justify-content: center;
+	border: 1px solid white;
+}
+
+canvas {
+	border: 1px solid white;
 }
