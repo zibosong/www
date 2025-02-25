@@ -20,15 +20,18 @@ const blackStoneFill = "Black";
 //const whiteStoneOut = "Gainboro";
 const whiteStoneOut = "white";
 const whiteStoneFill = "White";
-// Current stone flag: 0. Alternate; 1. Black; 2. White.
+// Current stone flag: 0. Alternate; 1. Black; -1. White.
 let stoneColor = 1;
+let currentStoneColor;
 let stoneColorFlag = 0;
 // Intersection status
 let initStoneMap = [];
 let currentStoneMap = [];
 let stoneMoveChain = {};
-let currentStep = 0;
-let stepHighWaterMarker = 0;
+let currentStep;
+let stepHighWaterMarker;
+//
+let gameMode;
 
 // main
 mainGame();
@@ -36,6 +39,8 @@ mainGame();
 function initGame() {
     stoneColor = 1;
     stoneColorFlag = 0;
+    currentStep = 0;
+    stepHighWaterMarker = 0;
     initStoneMap = [
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -57,11 +62,9 @@ function initGame() {
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     ];
-    currentStoneMap = [...initStoneMap];
-    //stoneMoveChain = {0: [...currentStoneMap], 1: [[]], 2: [[]], 3: [[]], 4:[[]], 5:[[]], 6: [[]] };
-    stoneMoveChain[0] = [...initStoneMap];
-    currentStep = 0;
-
+    currentStoneMap = initStoneMap.map(subArray => [...subArray]);
+    stoneMoveChain = {};
+    stoneMoveChain[0] = initStoneMap.map(subArray => [...subArray]);
     drawBoard();
 }
 
@@ -117,7 +120,7 @@ function drawAllStone() {
         for (let j = 0; j < 19; j++) {
             if (currentStoneMap[i][j] == 1) {
                 drawSingleStone("black", (j + 1) * intervalWidth, (i + 1) * intervalHeight);
-            } else if (currentStoneMap[i][j] == 2) {
+            } else if (currentStoneMap[i][j] == -1) {
                 drawSingleStone("white", (j + 1) * intervalWidth, (i + 1) * intervalHeight);
             }
         }
@@ -145,24 +148,35 @@ function updateStoneMap (event) {
     var canvasY = Math.round( (event.pageY - canvasTop - 8) / intervalHeight) * intervalHeight;
     var stoneMapX = Math.round( (event.pageY - canvasTop - 8) / intervalHeight ) - 1;
 
-    let currentColor = stoneColor;
+    //let currentColor = stoneColor;
+    if (stoneColorFlag == 1) {
+        currentStoneColor = 1;
+    } else if (stoneColorFlag == -1) {
+        currentStoneColor = -1;
+    } else {
+        currentStoneColor = stoneColor;
+    }
     
     if ( checkStoneRange(canvasX, intervalWidth) && checkStoneRange(canvasY, intervalHeight)) {
         if (currentStoneMap[stoneMapX][stoneMapY] == 0) {
-            if (currentColor > 0) {
+            if (currentStoneColor > 0) {
                 currentStoneMap[stoneMapX][stoneMapY] = 1;
-            } else {
-                currentStoneMap[stoneMapX][stoneMapY] = 2;
+            } else if (currentStoneColor < 0) { 
+                currentStoneMap[stoneMapX][stoneMapY] = -1;
+            } 
+            if (gameMode = "play") {
+                currentStep++;
+                if (currentStep > stepHighWaterMarker) {
+                    stepHighWaterMarker = currentStep;
+                }
+                stoneMoveChain[currentStep] = currentStoneMap.map(subArray => [...subArray]);
             }
             
-            currentStep++;
-            if (currentStep > stepHighWaterMarker) {
-                stepHighWaterMarker = currentStep;
-            }
-            console.log("Add stone step = " + currentStep);
-            stoneMoveChain[currentStep] = currentStoneMap.map(subArray => [...subArray]);
             updateBoard();
-            stoneColor = 0 - currentColor;
+            if (stoneColorFlag == 0) {
+                stoneColor = 0 - currentStoneColor;
+            }
+            
         }		
     }
 }
@@ -191,21 +205,36 @@ function removeStone(event) {
     }				
 }
 
+function setColorFlag(color_flag) {
+    if (color_flag == "black") {
+        stoneColorFlag = 1;
+        gameMode = "setup";
+    } else if (color_flag == "white") {
+        stoneColorFlag = -1;
+        gameMode = "setup";
+    } else if (color_flag == "alternate") {
+        stoneColorFlag = 0;
+        gameMode = "play";
+        stoneColor = 0 - stoneColor;
+    }
+    //console.log(stoneColorFlag);
+}
+
 function goPrevious() {
     if (currentStep > 0) {
         currentStep--;
-        currentStoneMap = [...stoneMoveChain[currentStep]];
+        currentStoneMap = stoneMoveChain[currentStep].map(subArray => [...subArray]);
         updateBoard();
-        console.log(currentStep);
+        //console.log(currentStep);
     };
 }
 
 function goNext() {
     if (currentStep < stepHighWaterMarker) {
         currentStep++;
-        currentStoneMap = [...stoneMoveChain[currentStep]];
+        currentStoneMap = stoneMoveChain[currentStep].map(subArray => [...subArray]);
         updateBoard();
-        console.log(currentStep);
+        //console.log(currentStep);
     }
     
 }
