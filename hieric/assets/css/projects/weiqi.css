@@ -25,3 +25,8 @@ div {
 canvas {
 	border: 1px solid white;
 }
+
+.layout_column {
+	display: flex;
+	flex-direction: column;
+}

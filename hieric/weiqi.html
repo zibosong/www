@@ -9,22 +9,46 @@
 	</head>
 	<body>
 		<div>
-			<h1>SURROUND</h1>
+			<h3>SURROUND</h3>
 		</div>
+		
 		<div>
-			<button onclick="setColorFlag('alternate');">Black/White</button>
-			<button onclick="setColorFlag('black');">Black</button>
-			<button onclick="setColorFlag('white')">White</button>
+			<canvas id="goboard"><canvas></canvas>
 		</div>
-		<div>
-			<button onclick="goPrevious();">Previous</button>
-			<button onclick="goNext();">Next</button>
-			<button onclick="resetBoard();">Reset</button>
+
+        <div>
+			<p id="stone_status">Current Turn</p>
 		</div>
-		<div>
-			<canvas id="goboard" ><canvas>
+
+		<div class="layout_column">
+			<div>
+				<button onclick="setColorFlag('alternate');">Black/White</button>
+				<button onclick="setColorFlag('black');">Black</button>
+				<button onclick="setColorFlag('white')">White</button>
+			</div>
+			<div>
+				<button onclick="goPrevious();">Previous</button>
+				<button onclick="goNext();">Next</button>
+				<button onclick="resetBoard();">Reset</button>
+			</div>
+			<div>
+			<div class="layout_column">
+				<div>
+					<p>Board Size</p>
+					<button onclick="setBoardSize('small');">Small</button>
+					<button onclick="setBoardSize('medium');">Medium</button>
+					<button onclick="setBoardSize('large');">Large</button>
+				</div>
+				<div>
+					<p>Color Set</p>
+					<button onclick="setColorSet('plain');">Plain</button>
+					<button onclick="setColorSet('standard');">Standard</button>
+					<button onclick="setColorSet('fancy');">Fancy</button>
+				</div>			
+			</div>		
 		</div>
-        
+
+
 		<script src="assets/js/projects/weiqi.js"></script>
 	</body>
 </html> 

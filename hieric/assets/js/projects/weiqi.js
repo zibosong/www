@@ -1,25 +1,27 @@
 const canvas = document.getElementById("goboard");
-canvas.width = 690;
-canvas.height = 750;
+
+canvas.width = 552;
+canvas.height = 600;
+
 const ctx = canvas.getContext("2d");
-const boardBackground="orange";
-const boardLineColor = "Black";
+var boardBackground="white";
+var boardLineColor = "Black";
 // canvas location
-const canvasRect = canvas.getBoundingClientRect();
-const canvasLeft = canvasRect.left;
-const canvasTop = canvasRect.top;
+var canvasRect = canvas.getBoundingClientRect();
+var canvasLeft = canvasRect.left;
+var canvasTop = canvasRect.top;
 // Board size
-const canvasHeight = canvas.height;
-const intervalHeight = canvasHeight / 20;
-const canvasWidth = canvas.width;
-const intervalWidth = canvasWidth / 20;
+var canvasHeight = canvas.height;
+var intervalHeight = canvasHeight / 20;
+var canvasWidth = canvas.width;
+var intervalWidth = canvasWidth / 20;
 // Stone color
-const blackStoneOut = "black";
-//const blackStoneOut = "grey";
-const blackStoneFill = "Black";
-//const whiteStoneOut = "Gainboro";
-const whiteStoneOut = "white";
-const whiteStoneFill = "White";
+//var blackStoneOut = "black";
+var blackStoneOut = "grey";
+var blackStoneFill = "Black";
+var whiteStoneOut = "Gainboro";
+//const whiteStoneOut = "white";
+var whiteStoneFill = "White";
 // Current stone flag: 0. Alternate; 1. Black; -1. White.
 let stoneColor = 1;
 let currentStoneColor;
@@ -32,6 +34,7 @@ let currentStep;
 let stepHighWaterMarker;
 //
 let gameMode;
+var displayCurrentTurn = document.getElementById("stone_status");
 
 // main
 mainGame();
@@ -135,6 +138,24 @@ function resetBoard() {
 function updateBoard() {
     drawBoard();
     drawAllStone();
+    updateCurrentTurn();
+}
+
+function updateCurrentTurn() {
+    if (stoneColorFlag == 0) {
+        if (currentStoneColor == 1) {
+            displayCurrentTurn.innerText = "White";
+        } else if (currentStoneColor == -1) {
+            displayCurrentTurn.innerText = "Black";
+        } else {
+            displayCurrentTurn.innerText = "Unknow";
+        }
+    } else if (stoneColorFlag == 1) {
+        displayCurrentTurn.innerText = "Black";
+    } else if (stoneColorFlag == -1) {
+        displayCurrentTurn.innerText = "White";
+    }
+    
 }
 
 function checkStoneRange (x, interval) {
@@ -150,12 +171,11 @@ function updateStoneMap (event) {
 
     //let currentColor = stoneColor;
     if (stoneColorFlag == 1) {
-        currentStoneColor = 1;
+        stoneColor = 1;
     } else if (stoneColorFlag == -1) {
-        currentStoneColor = -1;
-    } else {
-        currentStoneColor = stoneColor;
-    }
+        stoneColor = -1;
+    } 
+    currentStoneColor = stoneColor;
     
     if ( checkStoneRange(canvasX, intervalWidth) && checkStoneRange(canvasY, intervalHeight)) {
         if (currentStoneMap[stoneMapX][stoneMapY] == 0) {
@@ -205,6 +225,8 @@ function removeStone(event) {
     }				
 }
 
+//------------- Button Functions ------------------------
+
 function setColorFlag(color_flag) {
     if (color_flag == "black") {
         stoneColorFlag = 1;
@@ -215,9 +237,11 @@ function setColorFlag(color_flag) {
     } else if (color_flag == "alternate") {
         stoneColorFlag = 0;
         gameMode = "play";
-        stoneColor = 0 - stoneColor;
+        currentStoneColor = stoneColor;
+        stoneColor = 0 - stoneColor;       
     }
-    //console.log(stoneColorFlag);
+    updateCurrentTurn();
+    //console.log(stoneColorFlag, stoneColor, currentStoneColor);
 }
 
 function goPrevious() {
@@ -238,6 +262,60 @@ function goNext() {
     }
     
 }
+
+function setBoardSize(boardSize) {
+    // Basic unit 46 x 50
+    if (boardSize == "small") {
+        canvas.width = 368;
+        canvas.height = 400;
+    } else if (boardSize == "medium") {
+        canvas.width = 552;
+        canvas.height = 600;
+    } else if (boardSize == "large") {
+        canvas.width = 690;
+        canvas.height = 750;
+    }
+    // canvas location
+    canvasRect = canvas.getBoundingClientRect();
+    canvasLeft = canvasRect.left;
+    canvasTop = canvasRect.top;
+    // Board size
+    canvasHeight = canvas.height;
+    intervalHeight = canvasHeight / 20;
+    canvasWidth = canvas.width;
+    intervalWidth = canvasWidth / 20;
+    initGame();
+}
+
+function setColorSet(colorSet) {
+    if (colorSet == "plain") {
+        boardBackground = "White";
+        boardLineColor = "Grey";
+        blackStoneOut = "grey";
+        blackStoneFill = "Grey";
+        whiteStoneOut = "Gainboro";
+        whiteStoneFill = "White";
+    } else if (colorSet == "standard") {
+        boardBackground = "Orange";
+        boardLineColor = "Black";
+        // Stone Color
+        blackStoneOut = "grey";
+        blackStoneFill = "Black";
+        whiteStoneOut = "Gainboro";
+        whiteStoneFill = "White";
+    } else if (colorSet == "fancy") {
+        boardBackground = "Green";
+        boardLineColor = "Red";
+        //Stone color
+        blackStoneOut = "Purple";
+        blackStoneFill = "Red";
+        whiteStoneOut = "Gainboro";
+        whiteStoneFill = "Blue";
+    }
+    initGame();
+}
+
+//--------------------- End of Button Functions----------------------
 
 function mainGame() {
     // Draw game board
