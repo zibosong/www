@@ -1,9 +1,8 @@
+let debugMode = "off";
+
 const canvas = document.getElementById("goboard");
-
-canvas.width = 552;
-canvas.height = 600;
-
 const ctx = canvas.getContext("2d");
+
 let boardBackground="white";
 let boardLineColor = "Black";
 // canvas location
@@ -44,72 +43,26 @@ let groupMap = [];
 let stoneGroupChain = {};
 let groupMapChain = {};
 
-//----------------------- Main ---------------------
-mainGame();
-//---------------------- End of Main Program --------
-
 //--------------------- Initialize functions --------
-function initGame() {
-    stoneColor = 1;
-    stoneColorFlag = 0;
-    currentStep = 0;
-    stepHighWaterMarker = 0;
-    // For initStoneMap: the number represent what stone it is: -1: white; 0: no stone; 1: black.
-    initStoneMap = [
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    ];
-    currentStoneMap = initStoneMap.map(subArray => [...subArray]);
-    stoneMoveChain = {};
-    stoneMoveChain[0] = initStoneMap.map(subArray => [...subArray]);
-    // For groupMap, each number is mapping to the stone map
-    // And the number represent the group number. 
-    groupWaterMarker = 1;
-    groupMap = [
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    ];  
-    groupMapChain = {};
 
-    stoneGroup = [0, 1];
-    stoneGroupChain = {};
-
-
-    drawBoard();
+function printStoneMap() {
+    var tmp = "";
+    var toPrint = "";
+    for (var i = 0; i < 19; i++) {
+        for (var j = 0; j < 19; j++) {
+            if (currentStoneMap[i][j] != 0) {
+                tmp="[(" + i + "," + j + "):" +currentStoneMap[i][j] + "|" + groupMap[i][j] + "]";
+                toPrint = toPrint + tmp;
+            }
+            
+        }
+        if (toPrint != "") {
+            console.log(toPrint);
+            toPrint = "";
+        }
+        
+    }
+    console.log(stoneGroup);
 }
     
 // Drawing functinos
@@ -185,16 +138,16 @@ function updateBoard() {
 function updateCurrentTurn() {
     if (stoneColorFlag == 0) {
         if (currentStoneColor == 1) {
-            displayCurrentTurn.innerText = "White";
+            displayCurrentTurn.innerText = "Play: White";
         } else if (currentStoneColor == -1) {
-            displayCurrentTurn.innerText = "Black";
+            displayCurrentTurn.innerText = "Play: Black";
         } else {
             displayCurrentTurn.innerText = "Unknow";
         }
     } else if (stoneColorFlag == 1) {
-        displayCurrentTurn.innerText = "Black";
+        displayCurrentTurn.innerText = "Setup: Black";
     } else if (stoneColorFlag == -1) {
-        displayCurrentTurn.innerText = "White";
+        displayCurrentTurn.innerText = "Setup: White";
     }
     
 }
@@ -258,7 +211,14 @@ function updateStoneMap (event) {
                 stoneColor = 0 - currentStoneColor;
             }
             
+        } else if (gameMode == "remove" && stoneColorFlag != 0) {
+            currentStoneMap[stoneMapX][stoneMapY] = 0;
+            groupMap[stoneMapX][stoneMapY] = 0;
+            updateBoard();
         }		
+    }
+    if (debugMode == "on") {
+        printStoneMap();
     }
 }
 
@@ -386,12 +346,16 @@ function joinSurrondingGroup(x, y) {
                 if (groupMap[x1][y1] > 1) {
                     // If current stone just joined new group, add adjacent stone as well
                     groupMap[x2][y2] = groupMap[x1][y1];
-                    //console.log(x2 + ", " + y2 + " joined " + x1 + ", " + y1);
+                    if (debugMode = "on") {
+                        console.log(x2 + ", " + y2 + " joined " + x1 + ", " + y1);
+                    }
                 } else {
                     // if (x2,y2) is standalone, create a new group and add both.
                     groupWaterMarker++;
                     stoneGroup[groupWaterMarker] = 1;
-                    //console.log("Group water marker increased: " + groupWaterMarker);
+                    if (debugMode == "on") {
+                        console.log("Group water marker increased: " + groupWaterMarker);
+                    }
                     groupMap[x1][y1] = groupWaterMarker;
                     //console.log(groupMap[x1][y1] + ", " + currentStoneMap[x1][y1]);
                     groupMap[x2][y2] = groupWaterMarker;
@@ -403,10 +367,14 @@ function joinSurrondingGroup(x, y) {
                 if (groupMap[x1][y1] > 1) {
                     // Change group
                     changeGroup(groupMap[x2][y2], groupMap[x1][y1]);
-                    //console.log("Group " + groupMap[x2][y2] + " changed to " + groupMap[x1][y1]);
+                    if (debugMode == "on") {
+                        console.log("Group " + groupMap[x2][y2] + " changed to " + groupMap[x1][y1]);
+                    }
                 } else {
                     groupMap[x1][y1] = groupMap[x2][y2];
-                    //console.log(x1 + ", " + y1 + " joined group " + groupMap[x2][y2]);
+                    if (debugMode == "on") {
+                        console.log(x1 + ", " + y1 + " joined group " + groupMap[x2][y2]); 
+                    }
                 }
                 
             }
@@ -465,7 +433,9 @@ function killGroup(groupNumber) {
             }
         }
     }
-    
+    if (debugMode == "on") {
+        console.log("--> Group " + groupNumber + " was killed!");
+    }
 }
 
 function killSurroundingGroup(x, y) {
@@ -733,7 +703,6 @@ function updateStoneHealth() {
             
         }
     }
-    //console.log("(18, 18) group: " + groupMap[18][18] + "; Stone health: " + currentStoneMap[18][18]);
     // Second, update each stone group
     for (var x = 0; x < 19; x++) {
         for (var y = 0; y < 19; y++) {
@@ -759,12 +728,13 @@ function updateStoneHealth() {
                 } else if (stoneGroup[groupNumber] == 0) {
                 // If the group has no health, update currentStoneMap to death.
                     currentStoneMap[x][y] = 0;
+                // Also update stoneMap to 0
+                    groupMap[x][y] = 0;
                 }
             }
             
         }
     }
-    //console.log("(18, 18) group: " + groupMap[18][18] + "; Stone health: " + currentStoneMap[18][18]);
     // Finnally, update stone health by its group
     for (var m = 0; m < 19; m++) {
         for (var n = 0; n < 19; n++) {
@@ -776,52 +746,35 @@ function updateStoneHealth() {
             }
         }
     }
-    //console.log("(18, 18) group: " + groupMap[18][18] + "; Stone health: " + currentStoneMap[18][18]);
 }
 //-----------------  End of core functions -------------------
 
-function removeStone(event) {
-    //			
-}
-
 //------------- Button Functions ------------------------
 
-function setColorFlag(color_flag) {
-    if (color_flag == "black") {
-        stoneColorFlag = 1;
-        gameMode = "setup";
-    } else if (color_flag == "white") {
-        stoneColorFlag = -1;
-        gameMode = "setup";
-    } else if (color_flag == "alternate") {
-        stoneColorFlag = 0;
-        gameMode = "play";
-        currentStoneColor = stoneColor;
-        stoneColor = 0 - stoneColor;       
-    }
-    updateCurrentTurn();
-    //console.log(stoneColorFlag, stoneColor, currentStoneColor);
-}
 
 function goPrevious() {
-    if (currentStep > 0) {
+    if (currentStep > 0 && gameMode == "play") {
         currentStep--;
         currentStoneMap = stoneMoveChain[currentStep].map(subArray => [...subArray]);
         groupMap = groupMapChain[currentStep].map(subArray => [...subArray]);
         stoneGroup = [...stoneGroupChain[currentStep]];
+        stoneColor = 0 - stoneColor;
+        currentStoneColor = 0 - currentStoneColor;
         updateBoard();
-        //console.log(currentStep);
+        updateCurrentTurn();
     };
 }
 
 function goNext() {
-    if (currentStep < stepHighWaterMarker) {
+    if (currentStep < stepHighWaterMarker && gameMode == "play") {
         currentStep++;
         currentStoneMap = stoneMoveChain[currentStep].map(subArray => [...subArray]);
         groupMap = groupMapChain[currentStep].map(subArray => [...subArray]);
         stoneGroup = [...stoneGroupChain[currentStep]];
+        stoneColor = 0 - stoneColor;
+        currentStoneColor = 0 - currentStoneColor;
         updateBoard();
-        //console.log(currentStep);
+        updateCurrentTurn();
     }
 }
 
@@ -849,48 +802,19 @@ function setBoardSize(boardSize) {
     initGame();
 }
 
-function setColorSet(colorSet) {
-    if (colorSet == "plain") {
-        boardBackground = "White";
-        boardLineColor = "Grey";
-        blackStoneOut = "grey";
-        blackStoneFill = "Grey";
-        whiteStoneOut = "Gainboro";
-        whiteStoneFill = "White";
-    } else if (colorSet == "standard") {
-        boardBackground = "Orange";
-        boardLineColor = "Black";
-        // Stone Color
-        blackStoneOut = "grey";
-        blackStoneFill = "Black";
-        whiteStoneOut = "Gainboro";
-        whiteStoneFill = "White";
-    } else if (colorSet == "fancy") {
-        boardBackground = "Green";
-        boardLineColor = "Red";
-        //Stone color
-        blackStoneOut = "Purple";
-        blackStoneFill = "Red";
-        whiteStoneOut = "Gainboro";
-        whiteStoneFill = "Blue";
-    }
-    initGame();
-}
-
 function resetBoard() {
     initGame(); 
-    drawAllStone();
-}
-function resetBoard() {
-    initGame(); 
+    drawBoard();
     drawAllStone();
 }
 
 //--------------------- End of Button Functions----------------------
 
 function mainGame() {
-    // Draw game board
+    setBoardSize("large");
     initGame();
+    drawBoard();
+    drawAllStone();
     if (canvas.getContext) {
         // Draw stone by click
         canvas.addEventListener("click", event => updateStoneMap(event));
@@ -898,3 +822,8 @@ function mainGame() {
         canvas.addEventListener("dblclick", event => removeStone(event));
     }
 }
+
+//----------------------- Main ---------------------
+//setBoardSize("large");
+mainGame();
+//----------------- End of Main Program ------------
