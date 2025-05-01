@@ -408,7 +408,7 @@ function joinSurrondingGroup(x, y) {
                 if (groupMap[x1][y1] > 1) {
                     // If current stone just joined new group, add adjacent stone as well
                     groupMap[x2][y2] = groupMap[x1][y1];
-                    if (debugMode = "on") {
+                    if (debugMode == "on") {
                         console.log(x2 + ", " + y2 + " joined " + x1 + ", " + y1);
                     }
                 } else {

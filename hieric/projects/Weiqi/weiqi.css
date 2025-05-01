@@ -30,3 +30,8 @@ canvas {
 	display: flex;
 	flex-direction: column;
 }
+
+.index_picture {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+}
