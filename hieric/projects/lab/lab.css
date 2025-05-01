@@ -1,5 +1,5 @@
 body {
-    background-color: white;
+    background-color: grey;
 }
 
 h1 {
@@ -8,26 +8,8 @@ h1 {
     color: black;
 }
 
-.container.active {
+.container {
     background-color: orange;
-    height: 60vw;
-    width: 90vw;
-}
-
-canvas {
-    border: 1px solid black;
-}
-
-#main_div {
-    border: 1px solid black;
-    width: 1500px;
-    height: 500px;
-    display: flex;
-    flex-direction: box;
-}
-
-.sub_div_1 {
-    border: 1px solid blue;
-    width: 100px;
-    height: 100px;
+    height: 20vw;
+    width: 30vw;
 }
