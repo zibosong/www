@@ -1,4 +1,6 @@
-
+/*
+** Question data 
+*/
 //--------------------- Initialize functions --------
 function initGame() {
     stoneColor = 1;
@@ -32,7 +34,7 @@ function initGame() {
     stoneMoveChain[0] = initStoneMap.map(subArray => [...subArray]);
     // For groupMap, each number is mapping to the stone map
     // And the number represent the group number. 
-    groupWaterMarker = 4;
+    groupWaterMarker = 5;
     groupMap = [
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -56,7 +58,7 @@ function initGame() {
     ];  
     groupMapChain = {};
 
-    stoneGroup = [0, 1, 2, 2, 2];
+    stoneGroup = [0, 1, 2, 2, 2, 4];
     stoneGroupChain = {};
 
 
