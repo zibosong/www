@@ -1,5 +1,5 @@
 /*
-** Template for Siuo Questions.
+** Template for Sihuo Questions.
 */
 let debugMode = "off";
 
@@ -500,19 +500,6 @@ function killSurroundingGroup(x, y) {
 function updateStoneGroup(x, y) {
     let myGroup = 1;
     let myBreath = getStoneBreath(x, y);
-    // 1.1 If it is a corner stone
-        // 1.1.1 If it has 2 breaths
-            // Live, assign to group 1
-        // 1.1.2 If it has 1 breath
-            // 1.1.2.1 If it has 2 opposite color
-                // Live, assign to group 1
-            // 1.1.2.2 If it has 1 same color
-                // Add to group(1)
-        // 1.1.3 If it has 0 breath
-            // 1.1.3.1 If it has 2 opposite color
-                // Die, assign to group 0
-            // 1.1.3.2 If it has 2 same colore
-                // Add to group (2)
     if (getStonePositionType(x, y) == "corner") {
         // If this is corner stone
         if (myBreath == 2) {
@@ -549,26 +536,6 @@ function updateStoneGroup(x, y) {
             }
         }
     } else if (getStonePositionType(x, y) == "edge") {
-    // 1.2 If it is a edge stone
-        // 1.2.1 If it has 3 breath
-            // Live, assign to group 1
-        // 1.2.2 If it has 2 breath
-            // 1.2.2.1 If it has 1 opposite color
-                // Live, assign to group 1
-            // 1.2.2.2 If it has 1 same color
-                // Join the group
-        // 1.2.3 If it has 1 breath
-            // If it has 2 opposite color
-                // Live, add to group 1
-            // If it has 1 opposite and 1 same color
-                // Add to group(1)
-            // If it has 2 same color
-                // Add to group(2)
-        // 1.2.4 If it has 0 breath
-            // If it has 3 opposite color
-                // Die, assign to group (0)
-            // If it has 3 same color
-                // Add to group(3)
         if (myBreath == 3) {
             groupMap[x][y] = 1;
         } else if (myBreath == 2) {
@@ -642,43 +609,6 @@ function updateStoneGroup(x, y) {
             
         }
     }
-
-    // 1.3 If it is a center stone
-        // If it has 4 breaths
-            // Live, assign to group 1
-        // If it has 3 breaths
-            // If it has 1 opposite
-                // Live, assign to group 1
-            // If it has 1 same color
-                // Add to group(1)
-        // If it has 2 breaths
-            // If it has 2 opposite color
-                // Live, assing to group 1
-            // If it has 1 opposite and 1 same color
-                // Add to group(1)
-            // If it has 2 same color
-                // Add to group(2)
-        // If it has 1 breath
-            // If it has 3 opposite
-                // Add to group 0
-            // If it has 2 opposite and 1 same color
-                // Add to group(1)
-            // If it has 1 opposite and 2 same color
-                // Add to group(2)
-            // If it has 3 same color
-                // Add to group(3)
-        // If it has 0 breath
-            // If it has 4 opposite
-                // Die, assign to group 0
-            // If it has 3 opposite and 1 same color
-                // Add to group(1)
-            // If it has 2 opposite and 2 same color
-                // Add to group(2)
-            // If it has 1 opposite and 3 same color
-                // Add to group(3)
-            // If it has 4 same color
-                // Add to group(4)
-    
 }
 
 function updateStoneHealth() {

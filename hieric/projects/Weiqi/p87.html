@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en-US">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport"
+		      content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="weiqi.css"/> 
+		<title>weiqi</title>
+	</head>
+	<body>
+	
+
+		<div>
+			<canvas id="goboard"><canvas></canvas>
+		</div>
+
+        <div>
+			<p id="stone_status">Current Turn</p>
+		</div>
+
+		<div class="layout_column">
+
+			<div>
+				<button onclick="goPrevious();">Previous</button>
+				<button onclick="goNext();">Next</button>
+				<button onclick="resetBoard();">Reset</button>
+			</div>
+
+		<script src="p87.js"></script>
+		<script src="wq.js"></script>
+	</body>
+</html> 
